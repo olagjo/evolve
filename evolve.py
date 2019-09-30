@@ -4,13 +4,17 @@ for experimenting with simple problems and concepts
 '''
 from typing import List, Optional, Tuple
 
+GENERATION_SIZE: int = 20
+MUTATION_RATE: float = 0.07
+
 
 class Genotype:
     pass
 
 
 class Phenotype:
-    pass
+
+    genome: Genotype
 
 
 class EvolutionRunner:
@@ -22,7 +26,23 @@ class EvolutionRunner:
         pass
 
     def select_next_generation(self, scored_cohort: List[Tuple[Phenotype, float]]) -> List[Genotype]:
-        pass
+        """
+        implements a basic roulette selection mechanism, can be overridden to
+        create more exciting selection mechanisms
+        """
+        def get_genome(scored_phenotype: Tuple[Phenotype, float]) -> Genotype:
+            return scored_phenotype[0].genome
+
+        cummulative_scale: List[Tuple[float, Genotype]] = []
+        fitness_sum: float = 0.0
+        for individual, fitness in scored_cohort:
+            fitness_sum += fitness
+            cummulative_scale += [(fitness_sum, individual.genome)]
+
+        for child_index in range(0, GENERATION_SIZE):
+            pass
+
+        return list(map(get_genome, scored_cohort))
 
     def evolution_loop(self: 'EvolutionRunner',
                        gene_pool: List[Genotype], *,
