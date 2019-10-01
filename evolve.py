@@ -28,7 +28,7 @@ class Genotype:
         """
         return Genotype(self.genes)
 
-    def mutate(self, ranges: List[float], probability: float = 0.05) -> 'Genotype':
+    def mutate(self, ranges: List[float], probability: float = MUTATION_RATE) -> 'Genotype':
         # Define the default value with a check because it is not allowed in the function signature
         if ranges is None:
             ranges = [1.0 for gene in self.genes]
@@ -112,9 +112,6 @@ class EvolutionRunner:
         implements a basic roulette selection mechanism, can be overridden to
         create more exciting selection mechanisms
         """
-        def get_genome_from_scored_tuple(scored_phenotype: Tuple[Phenotype, float]) -> Genotype:
-            return scored_phenotype[0].genome
-
         cummulative_scale: List[Tuple[float, Genotype]] = []
         probability_sum: float = 0.0
         for individual, fitness in scored_cohort:
